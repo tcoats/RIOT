@@ -27,20 +27,33 @@
 #define PERIPH_CONF_H
 
 #include "periph_cpu.h"
+#include "cfg_rtt_default.h"
 #include "cfg_timer_tim2.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
 /**
- * @name    xtimer configuration
+ * @name    DMA streams configuration
  * @{
  */
-#define XTIMER_WIDTH        (16)
-#define XTIMER_BACKOFF      (50)
-#define XTIMER_ISR_BACKOFF  (40)
+#ifdef MODULE_PERIPH_DMA
+static const dma_conf_t dma_config[] = {
+    { .stream = 1  }, /* channel 2 */
+    { .stream = 2  }, /* channel 3 */
+    { .stream = 3  }, /* channel 4 */
+    { .stream = 4  }, /* channel 5 */
+    { .stream = 5  }, /* channel 6 */
+};
+
+#define DMA_SHARED_ISR_0            isr_dma1_channel2_3
+#define DMA_SHARED_ISR_0_STREAMS    { 0, 1 } /* Indexes 0 and 1 of dma_config share the same isr */
+#define DMA_SHARED_ISR_1            isr_dma1_channel4_5_6_7
+#define DMA_SHARED_ISR_1_STREAMS    { 2, 3, 4 } /* Indexes 2, 3 and 4 of dma_config share the same isr */
+
+#define DMA_NUMOF           ARRAY_SIZE(dma_config)
+#endif
 /** @} */
 
 /**
@@ -97,11 +110,22 @@ static const uart_conf_t uart_config[] = {
         .tx_af    = GPIO_AF7,
         .bus      = APB1,
         .irqn     = USART2_IRQn
+    },
+    {
+        .dev      = USART3,
+        .rcc_mask = RCC_APB1ENR_USART3EN,
+        .rx_pin   = GPIO_PIN(PORT_B, 11),
+        .tx_pin   = GPIO_PIN(PORT_B, 10),
+        .rx_af    = GPIO_AF7,
+        .tx_af    = GPIO_AF7,
+        .bus      = APB1,
+        .irqn     = USART3_IRQn
     }
 };
 
 #define UART_0_ISR          (isr_usart1)
 #define UART_1_ISR          (isr_usart2)
+#define UART_2_ISR          (isr_usart3)
 
 #define UART_NUMOF          ARRAY_SIZE(uart_config)
 /** @} */
@@ -165,7 +189,7 @@ static const spi_conf_t spi_config[] = {
 
 /**
  * @name I2C configuration
-  * @{
+ * @{
  */
 static const i2c_conf_t i2c_config[] = {
     {
@@ -179,10 +203,23 @@ static const i2c_conf_t i2c_config[] = {
         .rcc_mask       = RCC_APB1ENR_I2C1EN,
         .clk            = CLOCK_APB1,
         .irqn           = I2C1_EV_IRQn
+    },
+    {
+        .dev            = I2C2,
+        .speed          = I2C_SPEED_NORMAL,
+        .scl_pin        = GPIO_PIN(PORT_B, 10),
+        .sda_pin        = GPIO_PIN(PORT_B, 11),
+        .scl_af         = GPIO_AF4,
+        .sda_af         = GPIO_AF4,
+        .bus            = APB1,
+        .rcc_mask       = RCC_APB1ENR_I2C2EN,
+        .clk            = CLOCK_APB1,
+        .irqn           = I2C2_EV_IRQn
     }
 };
 
 #define I2C_0_ISR           isr_i2c1_ev
+#define I2C_1_ISR           isr_i2c2_ev
 
 #define I2C_NUMOF           ARRAY_SIZE(i2c_config)
 /** @} */

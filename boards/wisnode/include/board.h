@@ -40,18 +40,38 @@ extern "C" {
 /** @} */
 
 /**
+ * @name    xtimer configuration
+ * @{
+ */
+#define XTIMER_WIDTH        (16)
+#define XTIMER_BACKOFF      (50)
+#define XTIMER_ISR_BACKOFF  (40)
+/** @} */
+
+/**
  * @name        SX127X
  *
  * SX127X configuration.
  * @{
  */
-// #define SX127X_PARAM_SPI_NSS            GPIO_PIN(PORT_B, 0)
-// #define SX127X_PARAM_RESET              GPIO_PIN(PORT_A, 4)
-// #define SX127X_PARAM_DIO0               GPIO_PIN(PORT_B, 1)
-// #define SX127X_PARAM_DIO1               GPIO_PIN(PORT_B, 10)
-// #define SX127X_PARAM_DIO2               GPIO_PIN(PORT_B, 11)
-// #define SX127X_PARAM_DIO3               GPIO_PIN(PORT_B, 7)
+#define SX127X_PARAM_SPI                (SPI_DEV(0))
+#define SX127X_PARAM_SPI_NSS            GPIO_PIN(PORT_B, 0)
+#define SX127X_PARAM_RESET              GPIO_PIN(PORT_B, 13)
+#define SX127X_PARAM_DIO0               GPIO_PIN(PORT_A, 11)
+#define SX127X_PARAM_DIO1               GPIO_PIN(PORT_B, 1)
+#define SX127X_PARAM_DIO2               GPIO_PIN(PORT_A, 3)
+#define SX127X_PARAM_DIO3               GPIO_PIN(PORT_H, 0)
+#define SX127X_PARAM_DIO4               GPIO_PIN(PORT_C, 13)
+
+#define RADIO_RF_CTX_PA                 GPIO_PIN(PORT_A, 4)
+#define RADIO_RF_CBT_HF                 GPIO_PIN(PORT_B, 7)
+#define RADIO_RF_CRX_RX                 GPIO_PIN(PORT_B, 6)
+#define RADIO_OSC32_IN                  GPIO_PIN(PORT_C, 14)
+#define RADIO_OSC32_OUT                 GPIO_PIN(PORT_C, 15)
+
+//#define RADIO_TCXO_VCC_PIN                  GPIO_PIN(PORT_A, 12)
 /** @} */
+
 
 /**
  * @brief Initialize board specific hardware, including clock, LEDs and std-IO
